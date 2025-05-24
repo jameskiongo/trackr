@@ -1,6 +1,7 @@
 import { relations } from "drizzle-orm";
 import {
   integer,
+  date,
   pgTable,
   pgEnum,
   serial,
@@ -21,7 +22,7 @@ export const statusEnum = pgEnum("status", [
 export const usersTable = pgTable("users_table", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
-  age: integer("age").notNull(),
+  password: text("password").notNull(),
   email: text("email").notNull().unique(),
 });
 
