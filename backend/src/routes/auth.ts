@@ -46,8 +46,8 @@ router.post(
   ) => {
     const register = authService.registerUser(req.body);
     register
-      .then(() => {
-        res.status(201).json("User registered successfully");
+      .then((user) => {
+        res.status(201).json(user);
       })
       .catch((error) => {
         console.error("Registration error:", error);
