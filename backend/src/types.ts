@@ -9,6 +9,7 @@ export interface TLoginResponse {
   id: number;
   email: string;
   name: string;
+  token: string;
 }
 export type TRegisterRequest = z.infer<typeof NewUserSchema>;
 export interface TRegisterResponse {

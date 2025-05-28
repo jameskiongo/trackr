@@ -11,11 +11,16 @@ import {
   loginUserParser,
   newUserParser,
 } from "../middleware/errorMiddleware";
+import { verifyToken } from "../middleware/authMiddleware";
 
 const router = express.Router();
 
 router.get("/login", (_req, res) => {
   res.send("Login Page");
+});
+
+router.get("/protected", verifyToken, (_req, res) => {
+  res.send("Protected Route: Access Granted");
 });
 
 router.post(
