@@ -24,8 +24,9 @@ router.post(
     const token = req.headers.authorization?.split(" ")[1];
     const decoded = jwt.verify(token!, process.env.JWT_SECRET_KEY!);
     const userId = (decoded as { userId: number }).userId;
+    const { name } = req.body;
     const directory = directoryService.addDirectory({
-      ...req.body,
+      name: name,
       userId: userId,
     });
     directory

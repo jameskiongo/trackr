@@ -1,7 +1,6 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { db } from "../db/db";
 import { jobDirectoryTable } from "../db/schema";
-
 import { config } from "dotenv";
 import { TDirectoryRequest } from "../types";
 
@@ -12,7 +11,12 @@ const addDirectory = async ({ name, userId }: TDirectoryRequest) => {
     const existingDirectory = await db
       .select()
       .from(jobDirectoryTable)
-      .where(eq(jobDirectoryTable.name, name));
+      .where(
+        and(
+          eq(jobDirectoryTable.name, name),
+          eq(jobDirectoryTable.userId, userId),
+        ),
+      );
 
     if (existingDirectory.length > 0) {
       throw new Error("Directory already exists");
@@ -36,7 +40,6 @@ const addDirectory = async ({ name, userId }: TDirectoryRequest) => {
       name: result[0].name,
     };
   } catch (error) {
-    // throw new Error(error as string);
     throw new Error(
       error instanceof Error
         ? error.message
