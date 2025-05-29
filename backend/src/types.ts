@@ -17,3 +17,11 @@ export interface TRegisterResponse {
   name: string;
   email: string;
 }
+export interface TDirectoryRequest {
+  name: string;
+  userId: number;
+}
+export interface TDirectoryResponse {
+  id: number;
+  name: string;
+}
