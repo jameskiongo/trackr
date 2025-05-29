@@ -36,7 +36,12 @@ const addDirectory = async ({ name, userId }: TDirectoryRequest) => {
       name: result[0].name,
     };
   } catch (error) {
-    throw new Error(error as string);
+    // throw new Error(error as string);
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : "An error occurred while adding the directory",
+    );
   }
 };
 
