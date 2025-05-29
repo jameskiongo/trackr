@@ -25,3 +25,9 @@ export interface TDirectoryResponse {
   id: number;
   name: string;
 }
+export interface GetDirectoryResponse {
+  id: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+}

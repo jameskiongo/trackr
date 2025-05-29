@@ -2,7 +2,7 @@ import { and, eq } from "drizzle-orm";
 import { db } from "../db/db";
 import { jobDirectoryTable } from "../db/schema";
 import { config } from "dotenv";
-import { TDirectoryRequest } from "../types";
+import { GetDirectoryResponse, TDirectoryRequest } from "../types";
 
 config({ path: ".env" });
 
@@ -48,4 +48,19 @@ const addDirectory = async ({ name, userId }: TDirectoryRequest) => {
   }
 };
 
-export default { addDirectory };
+const getDirectories = async (
+  userId: number,
+): Promise<GetDirectoryResponse[]> => {
+  const directories = await db
+    .select()
+    .from(jobDirectoryTable)
+    .where(and(eq(jobDirectoryTable.userId, userId)));
+  return directories.map((directory) => ({
+    id: directory.id,
+    name: directory.name,
+    createdAt: directory.createdAt.toISOString(),
+    updatedAt: directory.updatedAt.toISOString(),
+  }));
+};
+
+export default { addDirectory, getDirectories };
