@@ -25,7 +25,7 @@ export const usersTable = pgTable("users_table", {
   email: text("email").notNull().unique(),
 });
 
-export const userRelation = relations(usersTable, ({ many }) => ({
+export const userJobRelation = relations(usersTable, ({ many }) => ({
   jobDirectoryTable: many(jobDirectoryTable),
 }));
 
@@ -40,6 +40,16 @@ export const jobDirectoryTable = pgTable("job_directory_table", {
     .notNull()
     .$onUpdate(() => new Date()),
 });
+
+export const directoryUserRelation = relations(
+  jobDirectoryTable,
+  ({ one }) => ({
+    user: one(usersTable, {
+      fields: [jobDirectoryTable.userId],
+      references: [usersTable.id],
+    }),
+  }),
+);
 
 export const directoryRelation = relations(jobDirectoryTable, ({ many }) => ({
   jobsTable: many(jobsTable),
@@ -62,9 +72,3 @@ export const jobsTable = pgTable("jobs_table", {
     .notNull()
     .$onUpdate(() => new Date()),
 });
-
-// export type InsertUser = typeof usersTable.$inferInsert;
-// export type SelectUser = typeof usersTable.$inferSelect;
-//
-// export type InsertPost = typeof postsTable.$inferInsert;
-// export type SelectPost = typeof postsTable.$inferSelect;
