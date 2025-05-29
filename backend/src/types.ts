@@ -31,3 +31,8 @@ export interface GetDirectoryResponse {
   createdAt: string;
   updatedAt: string;
 }
+export interface EditDirectoryRequest {
+  userId: number;
+  name: string;
+  id: string;
+}

@@ -17,6 +17,7 @@ export const NewUserSchema = z
 export const NewDirectorySchema = z.object({
   name: z.string().min(3, "Directory name must be at least 3 characters long"),
 });
+
 const toRegisterUser = (object: unknown): TRegisterRequest => {
   return NewUserSchema.parse(object);
 };
