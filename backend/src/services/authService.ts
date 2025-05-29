@@ -1,9 +1,9 @@
 import { eq } from "drizzle-orm";
-import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { db } from "../db/db";
 import { TLoginRequest, TRegisterRequest } from "../types";
 import { usersTable } from "../db/schema";
+import bcrypt from "bcryptjs";
 
 import { config } from "dotenv";
 

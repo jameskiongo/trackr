@@ -1,4 +1,5 @@
 import express from "express";
+import directoryRouter from "./routes/directory";
 import userAuthRouter from "./routes/auth";
 import "dotenv/config";
 import { config } from "dotenv";
@@ -15,6 +16,7 @@ app.get("/ping", (_req, res) => {
   res.send("pong");
 });
 app.use("/auth", userAuthRouter);
+app.use("/directory", directoryRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

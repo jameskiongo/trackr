@@ -4,32 +4,33 @@ import jwt from "jsonwebtoken";
 import { config } from "dotenv";
 
 config({ path: ".env" }); // or .env.local
+interface CustomRequest extends Request {
+  userId?: string | object; // Adjust type as needed
+  token?: string;
+}
 
 export const verifyToken = (
-  req: Request,
+  req: CustomRequest,
   res: Response,
   next: NextFunction,
 ) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
-
     if (!token) {
-      return res.status(401).json({ error: "Token not provided" });
+      res.status(401).json({ error: "Token not provided" });
     }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY!);
+    const decoded = jwt.verify(token!, process.env.JWT_SECRET_KEY!);
     if (!decoded) {
-      return res.status(401).json({ error: "Invalid token" });
+      res.status(401).json({ error: "Invalid token" });
     }
-
-    return next();
+    next();
   } catch (error: unknown) {
     if (error instanceof jwt.TokenExpiredError) {
-      return res.status(401).json({ error: "Token expired" });
+      res.status(401).json({ error: "Token expired" });
     }
     if (error instanceof jwt.JsonWebTokenError) {
-      return res.status(401).json({ error: "Invalid token" });
+      res.status(401).json({ error: "Invalid token" });
     }
-    return res.status(500).json({ error: "Authentication failed" });
+    res.status(500).json({ error: "Authentication failed" });
   }
 };
