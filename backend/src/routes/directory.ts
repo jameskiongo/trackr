@@ -9,6 +9,7 @@ import {
 } from "../types";
 import {
   addDirectory,
+  deleteDirectory,
   editDirectory,
   getDirectories,
   getDirectory,
@@ -106,6 +107,24 @@ router.put(
       });
   },
 );
+router.delete("/:id", verifyToken, (req: Request, res: Response) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  const decoded = jwt.verify(token!, process.env.JWT_SECRET_KEY!);
+  const userId = (decoded as { userId: number }).userId;
+  const id = req.params.id;
+
+  const directory = deleteDirectory({
+    userId: userId,
+    id: id,
+  });
+  directory
+    .then(() => {
+      res.status(204).json({ message: "Directory deleted successfully" });
+    })
+    .catch((error) => {
+      res.status(400).json("" + error);
+    });
+});
 
 router.use(errorMiddleware);
 export default router;

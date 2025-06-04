@@ -2,5 +2,12 @@ import addDirectory from "./addDirectory";
 import getDirectories from "./getDirectories";
 import editDirectory from "./editDirectory";
 import getDirectory from "./getDirectory";
+import deleteDirectory from "./deleteDirectory";
 
-export { addDirectory, getDirectories, editDirectory, getDirectory };
+export {
+  addDirectory,
+  getDirectories,
+  deleteDirectory,
+  editDirectory,
+  getDirectory,
+};
