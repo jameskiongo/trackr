@@ -1,6 +1,7 @@
 import express from "express";
 import directoryRouter from "./routes/directory";
 import userAuthRouter from "./routes/auth";
+import jobRouter from "./routes/jobs";
 import "dotenv/config";
 import { config } from "dotenv";
 
@@ -17,6 +18,7 @@ app.get("/ping", (_req, res) => {
 });
 app.use("/auth", userAuthRouter);
 app.use("/directory", directoryRouter);
+app.use("/jobs", jobRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
