@@ -1,6 +1,7 @@
 import { db } from "../../db/db";
 import { jobsTable } from "../../db/schema";
 import { and, eq } from "drizzle-orm";
+
 interface GetJobResponse {
   id: number;
   company_name: string;
@@ -12,11 +13,22 @@ interface GetJobResponse {
   updatedAt: string;
   location: string;
 }
-const getJobs = async (userId: number): Promise<GetJobResponse[]> => {
+interface GetJobRequest {
+  userId: number;
+  paramId: number;
+}
+
+const getJob = async ({
+  userId,
+  paramId,
+}: GetJobRequest): Promise<GetJobResponse[]> => {
   const jobs = await db
     .select()
     .from(jobsTable)
-    .where(and(eq(jobsTable.userId, userId)));
+    .where(and(and(eq(jobsTable.userId, userId), eq(jobsTable.id, paramId))));
+  if (jobs.length === 0) {
+    throw new Error("Not found");
+  }
   return jobs.map((job) => ({
     id: job.id,
     company_name: job.company_name || "",
@@ -29,4 +41,4 @@ const getJobs = async (userId: number): Promise<GetJobResponse[]> => {
     updatedAt: job.updatedAt.toISOString(),
   }));
 };
-export default getJobs;
+export default getJob;
