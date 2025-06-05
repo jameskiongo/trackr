@@ -28,23 +28,29 @@ export const verifyToken = (
   res: Response,
   next: NextFunction,
 ) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) {
+    res.status(401).json({ error: "Token not provided" });
+    return;
+    // throw new Error("Token not provided");
+  }
   try {
-    const token = req.headers.authorization?.split(" ")[1];
-    if (!token) {
-      res.status(401).json({ error: "Token not provided" });
-    }
-    const decoded = jwt.verify(token!, process.env.JWT_SECRET_KEY!);
-    if (!decoded) {
-      res.status(401).json({ error: "Invalid token" });
-    }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY!);
+    req.userId = (decoded as { userId: string }).userId;
     next();
   } catch (error: unknown) {
     if (error instanceof jwt.TokenExpiredError) {
       res.status(401).json({ error: "Token expired" });
+      return;
+      // throw new Error("Token expired");
     }
     if (error instanceof jwt.JsonWebTokenError) {
       res.status(401).json({ error: "Invalid token" });
+      return;
+      // throw new Error("Invalid token");
     }
     res.status(500).json({ error: "Authentication failed" });
+    return;
+    // next(error);
   }
 };
