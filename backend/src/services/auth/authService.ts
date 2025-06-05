@@ -1,8 +1,8 @@
 import { eq } from "drizzle-orm";
 import jwt from "jsonwebtoken";
-import { db } from "../db/db";
-import { TLoginRequest, TRegisterRequest } from "../types";
-import { usersTable } from "../db/schema";
+import { db } from "../../db/db";
+import { TLoginRequest, TRegisterRequest } from "../../types";
+import { usersTable } from "../../db/schema";
 import bcrypt from "bcryptjs";
 
 import { config } from "dotenv";

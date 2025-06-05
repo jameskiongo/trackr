@@ -17,6 +17,24 @@ export const NewUserSchema = z
 export const NewDirectorySchema = z.object({
   name: z.string().min(3, "Directory name must be at least 3 characters long"),
 });
+
+export const NewJobSchema = z.object({
+  company_name: z.string().optional(),
+  position_name: z.string().optional(),
+  application_url: z.string().url("Invalid URL format"),
+  status: z.enum([
+    "bookmarked",
+    "applied",
+    "rejected",
+    "ghosted",
+    "interviewing",
+    "offered",
+    "accepted",
+  ]),
+  location: z.string().optional(),
+  description: z.string().optional(),
+});
+
 const toRegisterUser = (object: unknown): TRegisterRequest => {
   return NewUserSchema.parse(object);
 };

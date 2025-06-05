@@ -57,10 +57,12 @@ export const directoryRelation = relations(jobDirectoryTable, ({ many }) => ({
 
 export const jobsTable = pgTable("jobs_table", {
   id: serial("id").primaryKey(),
-  company_name: text("company_name").notNull(),
-  position_name: text("position_name").notNull(),
+  company_name: text("company_name"),
+  position_name: text("position_name"),
+  location: text("location"),
+  description: text("description"),
   application_url: text("application_url").notNull().unique(),
-  status: statusEnum("status").notNull(),
+  status: statusEnum("status").notNull().default("bookmarked"),
   directory_id: integer("directory_id")
     .notNull()
     .references(() => jobDirectoryTable.id, { onDelete: "cascade" }),

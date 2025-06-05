@@ -1,6 +1,6 @@
 {
-  "id": "c343db88-0e37-406b-8eca-3b801f6e8cc6",
-  "prevId": "6c94f39d-0292-46fc-ac61-ec4ce34261de",
+  "id": "aeba1e05-c57a-4f82-a2d0-426a50532bf6",
+  "prevId": "1d67202b-6cdc-470b-ae58-2991b65d1da4",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -64,13 +64,6 @@
           "columns": [
             "name"
           ]
-        },
-        "job_directory_table_user_id_unique": {
-          "name": "job_directory_table_user_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "user_id"
-          ]
         }
       },
       "policies": {},
@@ -91,13 +84,25 @@
           "name": "company_name",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "position_name": {
           "name": "position_name",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
+        },
+        "location": {
+          "name": "location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "application_url": {
           "name": "application_url",
@@ -110,7 +115,8 @@
           "type": "status",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "'bookmarked'"
         },
         "directory_id": {
           "name": "directory_id",

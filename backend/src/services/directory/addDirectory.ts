@@ -1,11 +1,7 @@
+import { db } from "../../db/db";
+import { TDirectoryRequest } from "../../types";
+import { jobDirectoryTable } from "../../db/schema";
 import { and, eq } from "drizzle-orm";
-import { db } from "../db/db";
-import { jobDirectoryTable } from "../db/schema";
-import { config } from "dotenv";
-import { GetDirectoryResponse, TDirectoryRequest } from "../types";
-
-config({ path: ".env" });
-
 const addDirectory = async ({ name, userId }: TDirectoryRequest) => {
   try {
     const existingDirectory = await db
@@ -47,20 +43,4 @@ const addDirectory = async ({ name, userId }: TDirectoryRequest) => {
     );
   }
 };
-
-const getDirectories = async (
-  userId: number,
-): Promise<GetDirectoryResponse[]> => {
-  const directories = await db
-    .select()
-    .from(jobDirectoryTable)
-    .where(and(eq(jobDirectoryTable.userId, userId)));
-  return directories.map((directory) => ({
-    id: directory.id,
-    name: directory.name,
-    createdAt: directory.createdAt.toISOString(),
-    updatedAt: directory.updatedAt.toISOString(),
-  }));
-};
-
-export default { addDirectory, getDirectories };
+export default addDirectory;

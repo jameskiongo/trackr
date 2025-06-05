@@ -5,7 +5,7 @@ import {
   TRegisterRequest,
   TRegisterResponse,
 } from "../types";
-import authService from "../services/authService";
+import authService from "../services/auth/authService";
 import {
   errorMiddleware,
   loginUserParser,
