@@ -1,1 +1,0 @@
-ALTER TABLE "job_directory_table" DROP CONSTRAINT "job_directory_table_user_id_unique";

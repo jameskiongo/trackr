@@ -36,3 +36,12 @@ export interface EditDirectoryRequest {
   name: string;
   id: string;
 }
+export interface AddJobRequest {
+  userId: number;
+  company_name: string;
+  position_name: string;
+  status: string;
+  description: string;
+  application_url: string;
+  location: string;
+}

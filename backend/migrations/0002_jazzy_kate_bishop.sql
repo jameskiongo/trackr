@@ -1,1 +1,0 @@
-ALTER TABLE "job_directory_table" ADD CONSTRAINT "job_directory_table_user_id_unique" UNIQUE("user_id");

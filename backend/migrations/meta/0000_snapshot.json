@@ -1,5 +1,5 @@
 {
-  "id": "e9c28be5-0ebb-4e86-81bc-9e851cbcbd8f",
+  "id": "00889a1a-d050-4560-9385-8a3e75df9940",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -84,13 +84,25 @@
           "name": "company_name",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "position_name": {
           "name": "position_name",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
+        },
+        "location": {
+          "name": "location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "application_url": {
           "name": "application_url",
@@ -103,10 +115,11 @@
           "type": "status",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "'bookmarked'"
         },
-        "directory_id": {
-          "name": "directory_id",
+        "directoryId": {
+          "name": "directoryId",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -133,12 +146,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "jobs_table_directory_id_job_directory_table_id_fk": {
-          "name": "jobs_table_directory_id_job_directory_table_id_fk",
+        "jobs_table_directoryId_job_directory_table_id_fk": {
+          "name": "jobs_table_directoryId_job_directory_table_id_fk",
           "tableFrom": "jobs_table",
           "tableTo": "job_directory_table",
           "columnsFrom": [
-            "directory_id"
+            "directoryId"
           ],
           "columnsTo": [
             "id"
@@ -190,9 +203,9 @@
           "primaryKey": false,
           "notNull": true
         },
-        "age": {
-          "name": "age",
-          "type": "integer",
+        "password": {
+          "name": "password",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
