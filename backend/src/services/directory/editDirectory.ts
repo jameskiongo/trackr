@@ -12,7 +12,6 @@ const editDirectory = async ({ userId, name, id }: EditDirectoryRequest) => {
     if (existingDirectory.length === 0) {
       throw new Error("Directory not found");
     }
-    console.log(userId, name);
     const checkUser = await db
       .select()
       .from(jobDirectoryTable)

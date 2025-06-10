@@ -4,11 +4,11 @@ import { and, eq } from "drizzle-orm";
 
 interface GetJobResponse {
   id: number;
-  company_name: string;
-  position_name: string;
+  companyName: string;
+  positionName: string;
   status: string;
   description: string;
-  application_url: string;
+  applicationUrl: string;
   createdAt: string;
   updatedAt: string;
   location: string;
@@ -31,12 +31,13 @@ const getJob = async ({
   }
   return jobs.map((job) => ({
     id: job.id,
-    company_name: job.company_name || "",
-    position_name: job.position_name || "",
+    companyName: job.companyName || "",
+    positionName: job.positionName || "",
     status: job.status,
     description: job.description || "",
-    application_url: job.application_url,
+    applicationUrl: job.applicationUrl,
     location: job.location || "",
+    directoryId: job.directoryId,
     createdAt: job.createdAt.toISOString(),
     updatedAt: job.updatedAt.toISOString(),
   }));

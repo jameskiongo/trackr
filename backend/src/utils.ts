@@ -19,9 +19,9 @@ export const NewDirectorySchema = z.object({
 });
 
 export const NewJobSchema = z.object({
-  company_name: z.string().optional(),
-  position_name: z.string().optional(),
-  application_url: z.string().url("Invalid URL format"),
+  companyName: z.string().optional(),
+  positionName: z.string().optional(),
+  applicationUrl: z.string().url("Invalid URL format"),
   status: z.enum([
     "bookmarked",
     "applied",

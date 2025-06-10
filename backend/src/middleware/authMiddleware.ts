@@ -2,13 +2,25 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
 import { config } from "dotenv";
-import { NewDirectorySchema } from "../utils";
+import { NewDirectorySchema, NewJobSchema } from "../utils";
 
 config({ path: ".env" }); // or .env.local
 interface CustomRequest extends Request {
   userId?: string | object; // Adjust type as needed
   token?: string;
 }
+export const newJobParser = (
+  req: Request,
+  _res: Response,
+  next: NextFunction,
+) => {
+  try {
+    NewJobSchema.parse(req.body);
+    next();
+  } catch (error: unknown) {
+    next(error);
+  }
+};
 
 export const newDirectoryParser = (
   req: Request,
