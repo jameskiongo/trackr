@@ -2,8 +2,6 @@ import { and, eq } from "drizzle-orm";
 import { db } from "../../db/db";
 import { jobDirectoryTable, jobsTable } from "../../db/schema";
 
-//BUG: fix directoryId, userId, name constraints
-
 export interface AddJob {
   companyName: string;
   positionName: string;
@@ -49,6 +47,7 @@ const addJob = async (data: AddJob, userId: number, paramId: number) => {
       and(
         eq(jobsTable.applicationUrl, data.applicationUrl),
         eq(jobsTable.userId, userId),
+        eq(jobsTable.directoryId, paramId),
       ),
     );
   if (existingUrl.length > 0) {
