@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX "jobs_table_unique" ON "jobs_table" USING btree ("applicationUrl","user_id","directoryId");

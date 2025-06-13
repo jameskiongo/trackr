@@ -2,6 +2,8 @@ import { and, eq } from "drizzle-orm";
 import { db } from "../../db/db";
 import { jobDirectoryTable, jobsTable } from "../../db/schema";
 
+//BUG: fix directoryId, userId, name constraints
+
 export interface AddJob {
   companyName: string;
   positionName: string;
