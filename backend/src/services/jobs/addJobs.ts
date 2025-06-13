@@ -47,6 +47,7 @@ const addJob = async (data: AddJob, userId: number, paramId: number) => {
       and(
         eq(jobsTable.applicationUrl, data.applicationUrl),
         eq(jobsTable.userId, userId),
+        eq(jobsTable.directoryId, paramId),
       ),
     );
   if (existingUrl.length > 0) {

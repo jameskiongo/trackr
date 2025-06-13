@@ -32,7 +32,7 @@ export const userJobRelation = relations(usersTable, ({ many }) => ({
 export const jobDirectoryTable = pgTable("job_directory_table", {
   id: serial("id").primaryKey(),
   name: text("name").notNull().unique(),
-  userId: integer("user_id")
+  userId: integer("userId")
     .notNull()
     .references(() => usersTable.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at").notNull().defaultNow(),
@@ -66,7 +66,7 @@ export const jobsTable = pgTable("jobs_table", {
   directoryId: integer("directoryId")
     .notNull()
     .references(() => jobDirectoryTable.id, { onDelete: "cascade" }),
-  userId: integer("user_id")
+  userId: integer("userId")
     .notNull()
     .references(() => usersTable.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at").notNull().defaultNow(),
