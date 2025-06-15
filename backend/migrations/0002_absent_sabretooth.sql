@@ -1,1 +1,0 @@
-CREATE UNIQUE INDEX "job_directory_table_unique" ON "job_directory_table" USING btree ("name","user_id");

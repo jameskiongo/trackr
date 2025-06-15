@@ -1,11 +1,11 @@
 {
-  "id": "00889a1a-d050-4560-9385-8a3e75df9940",
+  "id": "0e6c7dc8-b0fb-4dc9-aad1-6f509665708f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.job_directory_table": {
-      "name": "job_directory_table",
+    "public.jobDirectoryTable": {
+      "name": "jobDirectoryTable",
       "schema": "",
       "columns": {
         "id": {
@@ -20,21 +20,21 @@
           "primaryKey": false,
           "notNull": true
         },
-        "user_id": {
-          "name": "user_id",
+        "userId": {
+          "name": "userId",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
-        "created_at": {
-          "name": "created_at",
+        "createdAt": {
+          "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
         },
-        "updated_at": {
-          "name": "updated_at",
+        "updatedAt": {
+          "name": "updatedAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true
@@ -42,12 +42,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "job_directory_table_user_id_users_table_id_fk": {
-          "name": "job_directory_table_user_id_users_table_id_fk",
-          "tableFrom": "job_directory_table",
-          "tableTo": "users_table",
+        "jobDirectoryTable_userId_usersTable_id_fk": {
+          "name": "jobDirectoryTable_userId_usersTable_id_fk",
+          "tableFrom": "jobDirectoryTable",
+          "tableTo": "usersTable",
           "columnsFrom": [
-            "user_id"
+            "userId"
           ],
           "columnsTo": [
             "id"
@@ -58,8 +58,8 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "job_directory_table_name_unique": {
-          "name": "job_directory_table_name_unique",
+        "jobDirectoryTable_name_unique": {
+          "name": "jobDirectoryTable_name_unique",
           "nullsNotDistinct": false,
           "columns": [
             "name"
@@ -70,8 +70,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.jobs_table": {
-      "name": "jobs_table",
+    "public.jobsTable": {
+      "name": "jobsTable",
       "schema": "",
       "columns": {
         "id": {
@@ -80,14 +80,14 @@
           "primaryKey": true,
           "notNull": true
         },
-        "company_name": {
-          "name": "company_name",
+        "companyName": {
+          "name": "companyName",
           "type": "text",
           "primaryKey": false,
           "notNull": false
         },
-        "position_name": {
-          "name": "position_name",
+        "positionName": {
+          "name": "positionName",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -104,8 +104,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "application_url": {
-          "name": "application_url",
+        "applicationUrl": {
+          "name": "applicationUrl",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -124,21 +124,21 @@
           "primaryKey": false,
           "notNull": true
         },
-        "user_id": {
-          "name": "user_id",
+        "userId": {
+          "name": "userId",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
-        "created_at": {
-          "name": "created_at",
+        "createdAt": {
+          "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
         },
-        "updated_at": {
-          "name": "updated_at",
+        "updatedAt": {
+          "name": "updatedAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true
@@ -146,10 +146,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "jobs_table_directoryId_job_directory_table_id_fk": {
-          "name": "jobs_table_directoryId_job_directory_table_id_fk",
-          "tableFrom": "jobs_table",
-          "tableTo": "job_directory_table",
+        "jobsTable_directoryId_jobDirectoryTable_id_fk": {
+          "name": "jobsTable_directoryId_jobDirectoryTable_id_fk",
+          "tableFrom": "jobsTable",
+          "tableTo": "jobDirectoryTable",
           "columnsFrom": [
             "directoryId"
           ],
@@ -159,12 +159,12 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "jobs_table_user_id_users_table_id_fk": {
-          "name": "jobs_table_user_id_users_table_id_fk",
-          "tableFrom": "jobs_table",
-          "tableTo": "users_table",
+        "jobsTable_userId_usersTable_id_fk": {
+          "name": "jobsTable_userId_usersTable_id_fk",
+          "tableFrom": "jobsTable",
+          "tableTo": "usersTable",
           "columnsFrom": [
-            "user_id"
+            "userId"
           ],
           "columnsTo": [
             "id"
@@ -175,11 +175,11 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "jobs_table_application_url_unique": {
-          "name": "jobs_table_application_url_unique",
+        "jobsTable_applicationUrl_unique": {
+          "name": "jobsTable_applicationUrl_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "application_url"
+            "applicationUrl"
           ]
         }
       },
@@ -187,8 +187,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.users_table": {
-      "name": "users_table",
+    "public.usersTable": {
+      "name": "usersTable",
       "schema": "",
       "columns": {
         "id": {
@@ -220,8 +220,8 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "users_table_email_unique": {
-          "name": "users_table_email_unique",
+        "usersTable_email_unique": {
+          "name": "usersTable_email_unique",
           "nullsNotDistinct": false,
           "columns": [
             "email"

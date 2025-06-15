@@ -5,43 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1749200620653,
-      "tag": "0000_lumpy_mach_iv",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1749200924946,
-      "tag": "0001_smooth_piledriver",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1749540921313,
-      "tag": "0002_absent_sabretooth",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1749541013454,
-      "tag": "0003_easy_mephisto",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1749542223397,
-      "tag": "0004_daffy_stark_industries",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1749799211142,
-      "tag": "0005_stormy_sunfire",
+      "when": 1749801718325,
+      "tag": "0000_next_aaron_stack",
       "breakpoints": true
     }
   ]

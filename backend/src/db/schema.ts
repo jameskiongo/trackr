@@ -18,7 +18,7 @@ export const statusEnum = pgEnum("status", [
   "accepted",
 ]);
 
-export const usersTable = pgTable("users_table", {
+export const usersTable = pgTable("usersTable", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   password: text("password").notNull(),
@@ -29,14 +29,14 @@ export const userJobRelation = relations(usersTable, ({ many }) => ({
   jobDirectoryTable: many(jobDirectoryTable),
 }));
 
-export const jobDirectoryTable = pgTable("job_directory_table", {
+export const jobDirectoryTable = pgTable("jobDirectoryTable", {
   id: serial("id").primaryKey(),
   name: text("name").notNull().unique(),
   userId: integer("userId")
     .notNull()
     .references(() => usersTable.id, { onDelete: "cascade" }),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at")
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt")
     .notNull()
     .$onUpdate(() => new Date()),
 });
@@ -55,10 +55,10 @@ export const directoryRelation = relations(jobDirectoryTable, ({ many }) => ({
   jobsTable: many(jobsTable),
 }));
 
-export const jobsTable = pgTable("jobs_table", {
+export const jobsTable = pgTable("jobsTable", {
   id: serial("id").primaryKey(),
-  companyName: text("company_name"),
-  positionName: text("position_name"),
+  companyName: text("companyName"),
+  positionName: text("positionName"),
   location: text("location"),
   description: text("description"),
   applicationUrl: text("applicationUrl").notNull().unique(),
@@ -69,8 +69,8 @@ export const jobsTable = pgTable("jobs_table", {
   userId: integer("userId")
     .notNull()
     .references(() => usersTable.id, { onDelete: "cascade" }),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at")
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt")
     .notNull()
     .$onUpdate(() => new Date()),
 });
