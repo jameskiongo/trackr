@@ -1,13 +1,13 @@
 import addDirectory from "./addDirectory";
-import getDirectories from "./getDirectories";
-import editDirectory from "./editDirectory";
-import getDirectory from "./getDirectory";
 import deleteDirectory from "./deleteDirectory";
+import editDirectory from "./editDirectory";
+import getDirectories from "./getDirectories";
+import getDirectory from "./getDirectory";
 
 export {
-  addDirectory,
-  getDirectories,
-  deleteDirectory,
-  editDirectory,
-  getDirectory,
+	addDirectory,
+	getDirectories,
+	deleteDirectory,
+	editDirectory,
+	getDirectory,
 };
