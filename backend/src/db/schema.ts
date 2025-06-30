@@ -58,11 +58,11 @@ export const jobsTable = pgTable("jobsTable", {
 });
 
 /** * Define relations for the tables
-User to Job Directory relation */
+User to  Directory relation */
 export const user_to_directory_relations = relations(
 	usersTable,
 	({ many }) => ({
-		directoryTable: many(directoryTable),
+		directories: many(directoryTable),
 	}),
 );
 
@@ -75,3 +75,18 @@ export const directory_to_user_relations = relations(
 		}),
 	}),
 );
+
+/** Directory to job relation */
+export const directory_to_jobs_relations = relations(
+	directoryTable,
+	({ many }) => ({
+		jobs: many(jobsTable),
+	}),
+);
+
+export const job_to_directory_relations = relations(jobsTable, ({ one }) => ({
+	directory: one(directoryTable, {
+		fields: [jobsTable.directoryId],
+		references: [directoryTable.id],
+	}),
+}));
