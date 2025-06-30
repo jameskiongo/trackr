@@ -1,25 +1,22 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "../../db/db";
-import { jobDirectoryTable } from "../../db/schema";
+import { directoryTable } from "../../db/schema";
 import type { EditDirectoryRequest } from "../../types";
 const editDirectory = async ({ userId, name, id }: EditDirectoryRequest) => {
 	const paramId = Number(id);
 	try {
 		const existingDirectory = await db
 			.select()
-			.from(jobDirectoryTable)
-			.where(eq(jobDirectoryTable.id, paramId));
+			.from(directoryTable)
+			.where(eq(directoryTable.id, paramId));
 		if (existingDirectory.length === 0) {
 			throw new Error("Directory not found");
 		}
 		const checkUser = await db
 			.select()
-			.from(jobDirectoryTable)
+			.from(directoryTable)
 			.where(
-				and(
-					eq(jobDirectoryTable.id, paramId),
-					eq(jobDirectoryTable.userId, userId),
-				),
+				and(eq(directoryTable.id, paramId), eq(directoryTable.userId, userId)),
 			);
 		console.log(checkUser);
 		if (checkUser.length === 0) {
@@ -27,12 +24,9 @@ const editDirectory = async ({ userId, name, id }: EditDirectoryRequest) => {
 		}
 		const existingName = await db
 			.select()
-			.from(jobDirectoryTable)
+			.from(directoryTable)
 			.where(
-				and(
-					eq(jobDirectoryTable.name, name),
-					eq(jobDirectoryTable.userId, userId),
-				),
+				and(eq(directoryTable.name, name), eq(directoryTable.userId, userId)),
 			);
 		if (existingName.length > 0) {
 			throw new Error("Directory with this name already exists");
@@ -43,9 +37,9 @@ const editDirectory = async ({ userId, name, id }: EditDirectoryRequest) => {
 		};
 
 		const result = await db
-			.update(jobDirectoryTable)
+			.update(directoryTable)
 			.set(updateDirectory)
-			.where(eq(jobDirectoryTable.id, paramId))
+			.where(eq(directoryTable.id, paramId))
 			.returning();
 
 		if (result.length === 0) {

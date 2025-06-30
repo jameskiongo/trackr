@@ -30,7 +30,8 @@ export const directoryTable = pgTable(
 	"directoryTable",
 	{
 		id: serial("id").primaryKey(),
-		name: text("name").notNull().unique(),
+		name: text("name").notNull(),
+		// name: text("name").notNull().unique(),
 		userId: integer("userId")
 			.notNull()
 			.references(() => usersTable.id, { onDelete: "cascade" }),
@@ -40,7 +41,7 @@ export const directoryTable = pgTable(
 			.$onUpdate(() => new Date()),
 	},
 	// Udemy can be present in both user 1 and 2
-	(t) => [unique().on(t.userId, t.name)],
+	(t) => [unique("directoryTable_name_userId_unique").on(t.userId, t.name)],
 );
 
 export const jobsTable = pgTable(
@@ -51,7 +52,8 @@ export const jobsTable = pgTable(
 		positionName: text("positionName"),
 		location: text("location"),
 		description: text("description"),
-		applicationUrl: text("applicationUrl").notNull().unique(),
+		applicationUrl: text("applicationUrl").notNull(),
+		// applicationUrl: text("applicationUrl").notNull().unique(),
 		status: statusEnum("status").notNull().default("bookmarked"),
 		directoryId: integer("directoryId")
 			.notNull()
@@ -65,7 +67,12 @@ export const jobsTable = pgTable(
 			.$onUpdate(() => new Date()),
 	},
 	// the constraint is where an the same applicationUrl can be present in both directory 1 and directory 2
-	(t) => [unique().on(t.directoryId, t.applicationUrl)],
+	(t) => [
+		unique("jobsTable_directoryId_applicationUrl_unique").on(
+			t.directoryId,
+			t.applicationUrl,
+		),
+	],
 );
 
 /** * Define relations for the tables

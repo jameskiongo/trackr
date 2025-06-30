@@ -1,6 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "../../db/db";
-import { jobDirectoryTable } from "../../db/schema";
+import { directoryTable } from "../../db/schema";
 
 interface GetDirectoryRequest {
 	userId: number;
@@ -9,12 +9,9 @@ interface GetDirectoryRequest {
 const getDirectory = async ({ userId, paramId }: GetDirectoryRequest) => {
 	const directories = await db
 		.select()
-		.from(jobDirectoryTable)
+		.from(directoryTable)
 		.where(
-			and(
-				eq(jobDirectoryTable.userId, userId),
-				eq(jobDirectoryTable.id, paramId),
-			),
+			and(eq(directoryTable.userId, userId), eq(directoryTable.id, paramId)),
 		);
 	if (directories.length === 0) {
 		throw new Error("Directory not found");

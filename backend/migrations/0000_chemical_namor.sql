@@ -1,11 +1,11 @@
 CREATE TYPE "public"."status" AS ENUM('bookmarked', 'applied', 'rejected', 'ghosted', 'interviewing', 'offered', 'accepted');--> statement-breakpoint
-CREATE TABLE "jobDirectoryTable" (
+CREATE TABLE "directoryTable" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
 	"userId" integer NOT NULL,
 	"createdAt" timestamp DEFAULT now() NOT NULL,
 	"updatedAt" timestamp NOT NULL,
-	CONSTRAINT "jobDirectoryTable_name_unique" UNIQUE("name")
+	CONSTRAINT "directoryTable_name_userId_unique" UNIQUE("userId","name")
 );
 --> statement-breakpoint
 CREATE TABLE "jobsTable" (
@@ -20,7 +20,7 @@ CREATE TABLE "jobsTable" (
 	"userId" integer NOT NULL,
 	"createdAt" timestamp DEFAULT now() NOT NULL,
 	"updatedAt" timestamp NOT NULL,
-	CONSTRAINT "jobsTable_applicationUrl_unique" UNIQUE("applicationUrl")
+	CONSTRAINT "jobsTable_directoryId_applicationUrl_unique" UNIQUE("directoryId","applicationUrl")
 );
 --> statement-breakpoint
 CREATE TABLE "usersTable" (
@@ -31,6 +31,6 @@ CREATE TABLE "usersTable" (
 	CONSTRAINT "usersTable_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
-ALTER TABLE "jobDirectoryTable" ADD CONSTRAINT "jobDirectoryTable_userId_usersTable_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."usersTable"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "jobsTable" ADD CONSTRAINT "jobsTable_directoryId_jobDirectoryTable_id_fk" FOREIGN KEY ("directoryId") REFERENCES "public"."jobDirectoryTable"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "directoryTable" ADD CONSTRAINT "directoryTable_userId_usersTable_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."usersTable"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "jobsTable" ADD CONSTRAINT "jobsTable_directoryId_directoryTable_id_fk" FOREIGN KEY ("directoryId") REFERENCES "public"."directoryTable"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "jobsTable" ADD CONSTRAINT "jobsTable_userId_usersTable_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."usersTable"("id") ON DELETE cascade ON UPDATE no action;

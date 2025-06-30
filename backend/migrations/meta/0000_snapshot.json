@@ -1,11 +1,11 @@
 {
-  "id": "0e6c7dc8-b0fb-4dc9-aad1-6f509665708f",
+  "id": "d5500655-35e0-4492-a4ef-829d195fdeeb",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.jobDirectoryTable": {
-      "name": "jobDirectoryTable",
+    "public.directoryTable": {
+      "name": "directoryTable",
       "schema": "",
       "columns": {
         "id": {
@@ -42,9 +42,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "jobDirectoryTable_userId_usersTable_id_fk": {
-          "name": "jobDirectoryTable_userId_usersTable_id_fk",
-          "tableFrom": "jobDirectoryTable",
+        "directoryTable_userId_usersTable_id_fk": {
+          "name": "directoryTable_userId_usersTable_id_fk",
+          "tableFrom": "directoryTable",
           "tableTo": "usersTable",
           "columnsFrom": [
             "userId"
@@ -58,10 +58,11 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "jobDirectoryTable_name_unique": {
-          "name": "jobDirectoryTable_name_unique",
+        "directoryTable_name_userId_unique": {
+          "name": "directoryTable_name_userId_unique",
           "nullsNotDistinct": false,
           "columns": [
+            "userId",
             "name"
           ]
         }
@@ -146,10 +147,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "jobsTable_directoryId_jobDirectoryTable_id_fk": {
-          "name": "jobsTable_directoryId_jobDirectoryTable_id_fk",
+        "jobsTable_directoryId_directoryTable_id_fk": {
+          "name": "jobsTable_directoryId_directoryTable_id_fk",
           "tableFrom": "jobsTable",
-          "tableTo": "jobDirectoryTable",
+          "tableTo": "directoryTable",
           "columnsFrom": [
             "directoryId"
           ],
@@ -175,10 +176,11 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "jobsTable_applicationUrl_unique": {
-          "name": "jobsTable_applicationUrl_unique",
+        "jobsTable_directoryId_applicationUrl_unique": {
+          "name": "jobsTable_directoryId_applicationUrl_unique",
           "nullsNotDistinct": false,
           "columns": [
+            "directoryId",
             "applicationUrl"
           ]
         }

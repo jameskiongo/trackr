@@ -1,6 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "../../db/db";
-import { jobDirectoryTable } from "../../db/schema";
+import { directoryTable } from "../../db/schema";
 import type { GetDirectoryResponse } from "../../types";
 
 const getDirectories = async (
@@ -8,8 +8,8 @@ const getDirectories = async (
 ): Promise<GetDirectoryResponse[]> => {
 	const directories = await db
 		.select()
-		.from(jobDirectoryTable)
-		.where(and(eq(jobDirectoryTable.userId, userId)));
+		.from(directoryTable)
+		.where(and(eq(directoryTable.userId, userId)));
 	return directories.map((directory) => ({
 		id: directory.id,
 		name: directory.name,
