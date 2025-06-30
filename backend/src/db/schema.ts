@@ -26,19 +26,22 @@ export const usersTable = pgTable("usersTable", {
 	email: text("email").notNull().unique(),
 });
 
-export const directoryTable = pgTable("directoryTable", {
-	id: serial("id").primaryKey(),
-	name: text("name").notNull().unique(),
-	userId: integer("userId")
-		.notNull()
-		.references(() => usersTable.id, { onDelete: "cascade" }),
-	createdAt: timestamp("createdAt").notNull().defaultNow(),
-	updatedAt: timestamp("updatedAt")
-		.notNull()
-		.$onUpdate(() => new Date()),
-});
-// I want to create a constraint that ensurest that the directory name is unique for each user and not globally unique
-// eg: Alice can be present in both id 1 and 2, right now it is not and it is unique globally not depending on user
+export const directoryTable = pgTable(
+	"directoryTable",
+	{
+		id: serial("id").primaryKey(),
+		name: text("name").notNull().unique(),
+		userId: integer("userId")
+			.notNull()
+			.references(() => usersTable.id, { onDelete: "cascade" }),
+		createdAt: timestamp("createdAt").notNull().defaultNow(),
+		updatedAt: timestamp("updatedAt")
+			.notNull()
+			.$onUpdate(() => new Date()),
+	},
+	// Udemy can be present in both user 1 and 2
+	(t) => [unique().on(t.userId, t.name)],
+);
 
 export const jobsTable = pgTable(
 	"jobsTable",
@@ -61,8 +64,8 @@ export const jobsTable = pgTable(
 			.notNull()
 			.$onUpdate(() => new Date()),
 	},
+	// the constraint is where an the same applicationUrl can be present in both directory 1 and directory 2
 	(t) => [unique().on(t.directoryId, t.applicationUrl)],
-	// the constraint is where an the same applicationUrl can be present in both let's say directory 1 and directory 2
 );
 
 /** * Define relations for the tables
