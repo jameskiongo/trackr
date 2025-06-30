@@ -90,3 +90,13 @@ export const job_to_directory_relations = relations(jobsTable, ({ one }) => ({
 		references: [directoryTable.id],
 	}),
 }));
+/** User to Jobs relation */
+export const user_to_jobs_relations = relations(usersTable, ({ many }) => ({
+	jobs: many(jobsTable),
+}));
+export const job_to_user_relations = relations(jobsTable, ({ one }) => ({
+	user: one(usersTable, {
+		fields: [jobsTable.userId],
+		references: [usersTable.id],
+	}),
+}));
