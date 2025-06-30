@@ -25,7 +25,7 @@ export const usersTable = pgTable("usersTable", {
 	email: text("email").notNull().unique(),
 });
 
-export const jobDirectoryTable = pgTable("jobDirectoryTable", {
+export const directoryTable = pgTable("directoryTable", {
 	id: serial("id").primaryKey(),
 	name: text("name").notNull().unique(),
 	userId: integer("userId")
@@ -47,7 +47,7 @@ export const jobsTable = pgTable("jobsTable", {
 	status: statusEnum("status").notNull().default("bookmarked"),
 	directoryId: integer("directoryId")
 		.notNull()
-		.references(() => jobDirectoryTable.id, { onDelete: "cascade" }),
+		.references(() => directoryTable.id, { onDelete: "cascade" }),
 	userId: integer("userId")
 		.notNull()
 		.references(() => usersTable.id, { onDelete: "cascade" }),
@@ -59,4 +59,19 @@ export const jobsTable = pgTable("jobsTable", {
 
 /** * Define relations for the tables
 User to Job Directory relation */
-// export const users_to_directory
+export const user_to_directory_relations = relations(
+	usersTable,
+	({ many }) => ({
+		directoryTable: many(directoryTable),
+	}),
+);
+
+export const directory_to_user_relations = relations(
+	directoryTable,
+	({ one }) => ({
+		user: one(usersTable, {
+			fields: [directoryTable.userId],
+			references: [usersTable.id],
+		}),
+	}),
+);
