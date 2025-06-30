@@ -1,6 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "../../db/db";
-import { jobDirectoryTable, jobsTable } from "../../db/schema";
+import { directoryTable, jobsTable } from "../../db/schema";
 
 export interface AddJob {
 	companyName: string;
@@ -21,20 +21,17 @@ export interface AddJob {
 const addJob = async (data: AddJob, userId: number, paramId: number) => {
 	const existingDirectory = await db
 		.select()
-		.from(jobDirectoryTable)
-		.where(eq(jobDirectoryTable.id, paramId));
+		.from(directoryTable)
+		.where(eq(directoryTable.id, paramId));
 	if (existingDirectory.length === 0) {
 		throw new Error("Directory does not exist");
 	}
 
 	const directoryOwner = await db
 		.select()
-		.from(jobDirectoryTable)
+		.from(directoryTable)
 		.where(
-			and(
-				eq(jobDirectoryTable.id, paramId),
-				eq(jobDirectoryTable.userId, userId),
-			),
+			and(eq(directoryTable.id, paramId), eq(directoryTable.userId, userId)),
 		);
 	if (directoryOwner.length === 0) {
 		throw new Error("You are not authorized");

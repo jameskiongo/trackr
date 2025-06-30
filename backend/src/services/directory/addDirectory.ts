@@ -1,17 +1,14 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "../../db/db";
-import { jobDirectoryTable } from "../../db/schema";
+import { directoryTable } from "../../db/schema";
 import type { TDirectoryRequest } from "../../types";
 const addDirectory = async ({ name, userId }: TDirectoryRequest) => {
 	try {
 		const existingDirectory = await db
 			.select()
-			.from(jobDirectoryTable)
+			.from(directoryTable)
 			.where(
-				and(
-					eq(jobDirectoryTable.name, name),
-					eq(jobDirectoryTable.userId, userId),
-				),
+				and(eq(directoryTable.name, name), eq(directoryTable.userId, userId)),
 			);
 
 		if (existingDirectory.length > 0) {
@@ -23,7 +20,7 @@ const addDirectory = async ({ name, userId }: TDirectoryRequest) => {
 		};
 
 		const result = await db
-			.insert(jobDirectoryTable)
+			.insert(directoryTable)
 			.values(newDirectory)
 			.returning();
 

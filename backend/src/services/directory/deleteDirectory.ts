@@ -1,6 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "../../db/db";
-import { jobDirectoryTable } from "../../db/schema";
+import { directoryTable } from "../../db/schema";
 interface DeleteDirectoryRequest {
 	userId: number;
 	id: string;
@@ -10,26 +10,26 @@ const deleteDirectory = async ({ userId, id }: DeleteDirectoryRequest) => {
 	try {
 		const existingDirectory = await db
 			.select()
-			.from(jobDirectoryTable)
-			.where(eq(jobDirectoryTable.id, directoryId));
+			.from(directoryTable)
+			.where(eq(directoryTable.id, directoryId));
 		if (existingDirectory.length === 0) {
 			throw new Error("Directory not found");
 		}
 		const checkOwnership = await db
 			.select()
-			.from(jobDirectoryTable)
+			.from(directoryTable)
 			.where(
 				and(
-					eq(jobDirectoryTable.id, directoryId),
-					eq(jobDirectoryTable.userId, userId),
+					eq(directoryTable.id, directoryId),
+					eq(directoryTable.userId, userId),
 				),
 			);
 		if (checkOwnership.length === 0) {
 			throw new Error("Access denied");
 		}
 		const result = await db
-			.delete(jobDirectoryTable)
-			.where(eq(jobDirectoryTable.id, directoryId))
+			.delete(directoryTable)
+			.where(eq(directoryTable.id, directoryId))
 			.returning();
 		if (result.length === 0) {
 			throw new Error("Failed to delete directory");
