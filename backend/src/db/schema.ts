@@ -6,6 +6,7 @@ import {
 	serial,
 	text,
 	timestamp,
+	unique,
 } from "drizzle-orm/pg-core";
 
 export const statusEnum = pgEnum("status", [
@@ -36,37 +37,41 @@ export const directoryTable = pgTable("directoryTable", {
 		.notNull()
 		.$onUpdate(() => new Date()),
 });
+// I want to create a constraint that ensurest that the directory name is unique for each user and not globally unique
+// eg: Alice can be present in both id 1 and 2, right now it is not and it is unique globally not depending on user
 
-export const jobsTable = pgTable("jobsTable", {
-	id: serial("id").primaryKey(),
-	companyName: text("companyName"),
-	positionName: text("positionName"),
-	location: text("location"),
-	description: text("description"),
-	applicationUrl: text("applicationUrl").notNull().unique(),
-	status: statusEnum("status").notNull().default("bookmarked"),
-	directoryId: integer("directoryId")
-		.notNull()
-		.references(() => directoryTable.id, { onDelete: "cascade" }),
-	userId: integer("userId")
-		.notNull()
-		.references(() => usersTable.id, { onDelete: "cascade" }),
-	createdAt: timestamp("createdAt").notNull().defaultNow(),
-	updatedAt: timestamp("updatedAt")
-		.notNull()
-		.$onUpdate(() => new Date()),
-});
+export const jobsTable = pgTable(
+	"jobsTable",
+	{
+		id: serial("id").primaryKey(),
+		companyName: text("companyName"),
+		positionName: text("positionName"),
+		location: text("location"),
+		description: text("description"),
+		applicationUrl: text("applicationUrl").notNull().unique(),
+		status: statusEnum("status").notNull().default("bookmarked"),
+		directoryId: integer("directoryId")
+			.notNull()
+			.references(() => directoryTable.id, { onDelete: "cascade" }),
+		userId: integer("userId")
+			.notNull()
+			.references(() => usersTable.id, { onDelete: "cascade" }),
+		createdAt: timestamp("createdAt").notNull().defaultNow(),
+		updatedAt: timestamp("updatedAt")
+			.notNull()
+			.$onUpdate(() => new Date()),
+	},
+	(t) => [unique().on(t.directoryId, t.applicationUrl)],
+	// the constraint is where an the same applicationUrl can be present in both let's say directory 1 and directory 2
+);
 
 /** * Define relations for the tables
 User to  Directory relation */
-export const user_to_directory_relations = relations(
-	usersTable,
-	({ many }) => ({
-		directories: many(directoryTable),
-	}),
-);
+export const userToDirectoryRelations = relations(usersTable, ({ many }) => ({
+	directories: many(directoryTable),
+}));
 
-export const directory_to_user_relations = relations(
+export const directoryToUserRelations = relations(
 	directoryTable,
 	({ one }) => ({
 		user: one(usersTable, {
@@ -77,24 +82,24 @@ export const directory_to_user_relations = relations(
 );
 
 /** Directory to job relation */
-export const directory_to_jobs_relations = relations(
+export const directoryToJobsRelations = relations(
 	directoryTable,
 	({ many }) => ({
 		jobs: many(jobsTable),
 	}),
 );
 
-export const job_to_directory_relations = relations(jobsTable, ({ one }) => ({
+export const jobToDirectoryRelations = relations(jobsTable, ({ one }) => ({
 	directory: one(directoryTable, {
 		fields: [jobsTable.directoryId],
 		references: [directoryTable.id],
 	}),
 }));
 /** User to Jobs relation */
-export const user_to_jobs_relations = relations(usersTable, ({ many }) => ({
+export const userToJobsRelations = relations(usersTable, ({ many }) => ({
 	jobs: many(jobsTable),
 }));
-export const job_to_user_relations = relations(jobsTable, ({ one }) => ({
+export const jobToUserRelations = relations(jobsTable, ({ one }) => ({
 	user: one(usersTable, {
 		fields: [jobsTable.userId],
 		references: [usersTable.id],
