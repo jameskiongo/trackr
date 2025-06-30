@@ -6,6 +6,7 @@ interface GetDirectoryRequest {
 	userId: number;
 	paramId: number;
 }
+//PERF: Return the jobs under the directory id
 const getDirectory = async ({ userId, paramId }: GetDirectoryRequest) => {
 	const directories = await db
 		.select()
