@@ -1,22 +1,7 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "../../db/db";
 import { directoryTable, jobsTable } from "../../db/schema";
-
-export interface AddJob {
-	companyName: string;
-	positionName: string;
-	status:
-		| "bookmarked"
-		| "applied"
-		| "rejected"
-		| "ghosted"
-		| "interviewing"
-		| "offered"
-		| "accepted";
-	description: string;
-	applicationUrl: string;
-	location: string;
-}
+import type { AddJob } from "../../types";
 
 const addJob = async (data: AddJob, userId: number, paramId: number) => {
 	const existingDirectory = await db

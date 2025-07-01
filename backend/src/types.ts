@@ -1,6 +1,36 @@
 import type { z } from "zod";
 import type { NewUserSchema } from "./utils";
 
+export interface AddJob {
+	companyName: string;
+	positionName: string;
+	status:
+		| "bookmarked"
+		| "applied"
+		| "rejected"
+		| "ghosted"
+		| "interviewing"
+		| "offered"
+		| "accepted";
+	description: string;
+	applicationUrl: string;
+	location: string;
+}
+export interface EditJob {
+	companyName?: string;
+	positionName?: string;
+	status?:
+		| "bookmarked"
+		| "applied"
+		| "rejected"
+		| "ghosted"
+		| "interviewing"
+		| "offered"
+		| "accepted";
+	description?: string;
+	applicationUrl?: string;
+	location?: string;
+}
 export interface TLoginRequest {
 	email: string;
 	password: string;

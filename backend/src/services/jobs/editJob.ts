@@ -1,61 +1,76 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "../../db/db";
-import { directoryTable } from "../../db/schema";
-import type { EditDirectoryRequest } from "../../types";
-const editJob = async ({ userId, name, id }: EditDirectoryRequest) => {
-	const paramId = Number(id);
+import { jobsTable } from "../../db/schema";
+import type { EditJob } from "../../types";
+const editJob = async (data: EditJob, userId: number, paramId: number) => {
+	if (!data) {
+		throw new Error("Data is required to edit a job");
+	}
 	try {
-		const existingDirectory = await db
+		const job = await db
 			.select()
-			.from(directoryTable)
-			.where(eq(directoryTable.id, paramId));
-		if (existingDirectory.length === 0) {
-			throw new Error("Directory not found");
+			.from(jobsTable)
+			.where(eq(jobsTable.id, paramId));
+		if (job.length === 0) {
+			throw new Error("Job not found");
 		}
-		const checkUser = await db
-			.select()
-			.from(directoryTable)
-			.where(
-				and(eq(directoryTable.id, paramId), eq(directoryTable.userId, userId)),
-			);
-		console.log(checkUser);
-		if (checkUser.length === 0) {
-			throw new Error("You are not authorized to edit");
+		if (job[0].userId !== userId) {
+			throw new Error("You are not authorized to edit this job");
 		}
-		const existingName = await db
-			.select()
-			.from(directoryTable)
-			.where(
-				and(eq(directoryTable.name, name), eq(directoryTable.userId, userId)),
-			);
-		if (existingName.length > 0) {
-			throw new Error("Directory with this name already exists");
+		if (
+			data.applicationUrl &&
+			data.applicationUrl.length > 0 &&
+			data.applicationUrl !== job[0].applicationUrl
+		) {
+			const existingUrl = await db
+				.select()
+				.from(jobsTable)
+				.where(
+					and(
+						eq(jobsTable.applicationUrl, data.applicationUrl),
+						eq(jobsTable.userId, userId),
+						eq(jobsTable.directoryId, job[0].directoryId),
+					),
+				);
+			if (existingUrl.length > 0) {
+				throw new Error("Job with this Url already exists");
+			}
 		}
-		const updateDirectory = {
-			name,
-			userId,
+		const updateJob = {
+			companyName: data.companyName,
+			positionName: data.positionName,
+			status: data.status,
+			description: data.description,
+			applicationUrl: data.applicationUrl,
+			location: data.location,
 		};
 
 		const result = await db
-			.update(directoryTable)
-			.set(updateDirectory)
-			.where(eq(directoryTable.id, paramId))
+			.update(jobsTable)
+			.set(updateJob)
+			.where(eq(jobsTable.id, paramId))
 			.returning();
 
 		if (result.length === 0) {
-			throw new Error("Failed to add directory");
+			throw new Error("Failed to add job");
 		}
 
 		return {
 			id: result[0].id,
-			name: result[0].name,
+			name: result[0].companyName || "",
+			positionName: result[0].positionName || "",
+			status: result[0].status,
+			description: result[0].description || "",
+			applicationUrl: result[0].applicationUrl,
+			directoryId: result[0].directoryId,
+			location: result[0].location || "",
 			updatedAt: result[0].updatedAt.toISOString(),
 		};
 	} catch (error) {
 		throw new Error(
 			error instanceof Error
 				? error.message
-				: "An error occurred while editing the directory",
+				: "An error occurred while editing the job",
 		);
 	}
 };

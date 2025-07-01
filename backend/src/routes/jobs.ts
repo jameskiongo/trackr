@@ -3,7 +3,9 @@ import jwt from "jsonwebtoken";
 import { newJobParser, verifyToken } from "../middleware/authMiddleware";
 import { errorMiddleware } from "../middleware/errorMiddleware";
 import { deleteJob, getJob, getJobs } from "../services/jobs";
-import addJob, { type AddJob } from "../services/jobs/addJobs";
+import addJob from "../services/jobs/addJobs";
+import editJob from "../services/jobs/editJob";
+import type { AddJob, EditJob } from "../types";
 const router = express.Router();
 
 router.get("/", verifyToken, (req: Request, res: Response) => {
@@ -74,8 +76,8 @@ router.post(
 		const userId = (decoded as { userId: number }).userId;
 		const response = addJob(req.body, userId, paramId);
 		response
-			.then(() => {
-				res.status(201).json("Success");
+			.then((job) => {
+				res.status(201).json(job);
 			})
 			.catch((error) => {
 				res.status(400).json(`${error}`);
@@ -95,18 +97,43 @@ router.delete("/:id", verifyToken, (req: Request, res: Response) => {
 	const userId = (decoded as { userId: number }).userId;
 	const id = req.params.id;
 
-	const directory = deleteJob({
+	const job = deleteJob({
 		userId: userId,
 		id: id,
 	});
-	directory
+	job
 		.then(() => {
-			res.status(204).json({ message: "Directory deleted successfully" });
+			res.status(204).json({ message: "Job deleted successfully" });
 		})
 		.catch((error) => {
 			res.status(400).json(`${error}`);
 		});
 });
+router.patch(
+	"/:id",
+	verifyToken,
+	(req: Request<{ id: string }, unknown, EditJob>, res: Response) => {
+		const token = req.headers.authorization?.split(" ")[1];
+		if (!token) {
+			throw new Error("Token not provided");
+		}
+		const SecretKey = String(process.env.JWT_SECRET_KEY);
+		if (!process.env.JWT_SECRET_KEY) {
+			throw new Error("JWT_SECRET_KEY is not defined");
+		}
+		const decoded = jwt.verify(token, SecretKey);
+		const userId = (decoded as { userId: number }).userId;
+		const id = Number(req.params.id);
+		const jobs = editJob(req.body, userId, id);
+		jobs
+			.then((job) => {
+				res.status(201).json(job);
+			})
+			.catch((error) => {
+				res.status(400).json(`${error}`);
+			});
+	},
+);
 
 router.use(errorMiddleware);
 export default router;
