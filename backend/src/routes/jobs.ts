@@ -2,7 +2,7 @@ import express, { type Response, type Request } from "express";
 import jwt from "jsonwebtoken";
 import { newJobParser, verifyToken } from "../middleware/authMiddleware";
 import { errorMiddleware } from "../middleware/errorMiddleware";
-import { getJob, getJobs } from "../services/jobs";
+import { deleteJob, getJob, getJobs } from "../services/jobs";
 import addJob, { type AddJob } from "../services/jobs/addJobs";
 const router = express.Router();
 
@@ -82,6 +82,31 @@ router.post(
 			});
 	},
 );
+router.delete("/:id", verifyToken, (req: Request, res: Response) => {
+	const token = req.headers.authorization?.split(" ")[1];
+	if (!token) {
+		throw new Error("Token not provided");
+	}
+	const SecretKey = String(process.env.JWT_SECRET_KEY);
+	if (!process.env.JWT_SECRET_KEY) {
+		throw new Error("JWT_SECRET_KEY is not defined");
+	}
+	const decoded = jwt.verify(token, SecretKey);
+	const userId = (decoded as { userId: number }).userId;
+	const id = req.params.id;
+
+	const directory = deleteJob({
+		userId: userId,
+		id: id,
+	});
+	directory
+		.then(() => {
+			res.status(204).json({ message: "Directory deleted successfully" });
+		})
+		.catch((error) => {
+			res.status(400).json(`${error}`);
+		});
+});
 
 router.use(errorMiddleware);
 export default router;
